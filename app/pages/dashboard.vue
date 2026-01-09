@@ -3,11 +3,9 @@ const data = ref<any>(null)
 const error = ref(false)
 const loading = ref(false)
 
-// State untuk UI (yang user lihat dan kontrol)
 const uiRelay1 = ref(false)
 const uiRelay2 = ref(false)
 
-// State dari backend (yang sebenarnya)
 const backendRelay1 = ref(false)
 const backendRelay2 = ref(false)
 
@@ -32,13 +30,11 @@ const sendRelayCommand = async () => {
     })
     console.log('Relay command sent:', res)
     
-    // Setelah berhasil kirim, sync dengan backend state
     backendRelay1.value = uiRelay1.value
     backendRelay2.value = uiRelay2.value
   } catch (e) {
     console.error('Failed to send relay command:', e)
     error.value = true
-    // Jika gagal, kembalikan ke state backend
     uiRelay1.value = backendRelay1.value
     uiRelay2.value = backendRelay2.value
   } finally {
@@ -46,7 +42,6 @@ const sendRelayCommand = async () => {
   }
 }
 
-// Hanya kirim ketika user benar-benar mengubah switch
 let debounceTimer: ReturnType<typeof setTimeout>
 watch([uiRelay1, uiRelay2], () => {
   clearTimeout(debounceTimer)
